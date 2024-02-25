@@ -2,15 +2,35 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import './PhoneBook.css';
 
-const PhoneBook=() =>{
+const PhoneBook = () => {
   const [contacts, setContacts] = useState([]);
   const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const validateName = (name) => {
+    const nameRegex = /^[a-zA-Zа-яА-Я]+([' -]?[a-zA-Zа-яА-Я]+)*$/;
+    return nameRegex.test(name);
+  };
+
+  const validateNumber = (number) => {
+    const numberRegex = /^\+?\d{1,4}?([-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,4}){1,2}([-.\s]?\d{1,9})?$/;
+    return numberRegex.test(number);
+  };
 
   const handleAddContact = (e) => {
     e.preventDefault();
-    const newContact = { id: nanoid(), name };
+    if (!validateName(name)) {
+      alert('Please enter a valid name.');
+      return;
+    }
+    if (!validateNumber(number)) {
+      alert('Please enter a valid phone number.');
+      return;
+    }
+    const newContact = { id: nanoid(), name, number };
     setContacts([...contacts, newContact]);
     setName('');
+    setNumber('');
   };
 
   return (
@@ -20,18 +40,25 @@ const PhoneBook=() =>{
         <input
           type="text"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+([' -]?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder="Enter name"
+        />
+        <input
+          type="tel"
+          name="number"
+          required
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+          placeholder="Enter phone number"
         />
         <button type="submit">Add contact</button>
       </form>
       <h2>Contacts</h2>
       <ul>
         {contacts.map(contact => (
-          <li key={contact.id}>{contact.name}</li>
+          <li key={contact.id}>{contact.name} - {contact.number}</li>
         ))}
       </ul>
     </div>
