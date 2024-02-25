@@ -1,4 +1,3 @@
-
 const ContactListItem = ({ contact, onDelete }) => {
   return (
     <li>

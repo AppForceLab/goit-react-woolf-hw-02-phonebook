@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import './ContactForm.css';
 
 const ContactForm = ({ onAdd, contacts }) => {
-  // Now accepts contacts as a prop
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
